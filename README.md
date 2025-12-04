@@ -1,5 +1,7 @@
 # 🔮 Morphic
 
+### Version 0.1
+
 **Intelligent OCR with Post-Processing Downsampling**
 
 Transform scanned documents into searchable PDFs while maintaining maximum OCR accuracy and flexible output resolutions.
@@ -115,7 +117,7 @@ When you run `python morphic.py` with no arguments, you'll see:
 ```
 ╔══════════════════════════════════════════════════════════╗
 ║                    MORPHIC                               ║
-║          Intelligent OCR with Downsampling              ║
+║          Intelligent OCR with Downsampling               ║
 ╚══════════════════════════════════════════════════════════╝
 
 Usage: python morphic.py [OPTIONS]

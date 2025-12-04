@@ -3,6 +3,21 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Metadata
+notes/
+
+# References
+reference_implementations/
+
+# Sample pdf files
+ocr_sample_input_files/
+ocr_sample_output_files/
+
+# Test content
+tests/functional_tests/output/
+tests/functional_tests/input/
+
+
 # C extensions
 *.so
 

@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "ocr_engines": {
+    "tesseract": {
+      "binary_path": "tesseract",
+      "oem": 3,
+      "psm": 3,
+      "language": "eng"
+    }
+  },
+  "pdf_engines": {
+    "pikepdf": {
+      "rendering_mode": 3,
+      "font": "Helvetica",
+      "font_size_ratio": 0.8
+    }
+  },
+  "compression": {
+    "jpeg2000": {
+      "quality_layers": [50],
+      "quality_mode": "rates"
+    },
+    "jpeg": {
+      "quality": 95
+    },
+    "png": {
+      "optimize": true
+    }
+  },
+  "processing": {
+    "default_dpi": 600,
+    "temp_dir": "/tmp/morphic",
+    "dehyphenation": {
+      "enabled": true,
+      "dictionary": "en_US",
+      "min_word_length": 4
+    }
+  }
+}

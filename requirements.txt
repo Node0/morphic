@@ -1,9 +1,30 @@
-easyocr>=1.7.0
+# Morphic v0.2 Dependencies
+
+# PDF Manipulation
+pikepdf>=8.0.0
 pdf2image>=1.16.0
-PyMuPDF>=1.23.0
-natsort>=8.4.0
-psutil>=5.9.0
-rich>=13.0.0
+
+# Image Processing
 Pillow>=10.0.0
-numpy>=1.24.0
+
+# XML/HTML Processing (for hOCR)
+lxml>=4.9.0
+
+# Spell Checking (for dehyphenation)
 pyenchant>=3.2.0
+
+# System Monitoring
+psutil>=5.9.0
+
+# Terminal UI
+rich>=13.0.0
+
+# Numerical Operations
+numpy>=1.24.0
+
+# Natural Sorting (for image files)
+natsort>=8.4.0
+
+# Note: OCR engines are system dependencies
+# - Tesseract: brew install tesseract (macOS) or apt-get install tesseract-ocr (Linux)
+# - Poppler (for pdf2image): brew install poppler (macOS) or apt-get install poppler-utils (Linux)
