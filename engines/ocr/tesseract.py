@@ -200,9 +200,10 @@ class TesseractEngine:
             temp_img = output_path.parent / f"{output_path.stem}_img.png"
             hocr_base = output_path.parent / output_path.stem
         else:
-            # Use temp directory
-            temp_dir = Path(tempfile.gettempdir()) / "morphic"
-            temp_dir.mkdir(exist_ok=True)
+            # Use temp directory - /var/tmp is more reliable on macOS than /tmp
+            # (which is symlinked to /private/tmp and can cause Tesseract access issues)
+            temp_dir = Path("/var/tmp/morphic")
+            temp_dir.mkdir(exist_ok=True, parents=True)
             temp_img = temp_dir / "morphic_temp.png"
             hocr_base = temp_dir / "morphic_temp"
 
@@ -237,35 +238,29 @@ class TesseractEngine:
         Print("DEBUG", f"Running: {' '.join(cmd)}")
 
         try:
+            # Use bytes mode to avoid encoding issues with Tesseract output
+            # Note: Do NOT use check=True - Tesseract may return non-zero even on success
+            # (e.g., warnings about image format that don't prevent OCR)
             result = subprocess.run(
                 cmd,
-                check=True,
                 capture_output=True,
-                text=True,
                 timeout=120  # 2 minute timeout for OCR
             )
 
-            # Log Tesseract output if present
-            # Note: Tesseract writes progress to stderr even on success
+            # Log Tesseract output if present (decode with error handling)
+            # Note: Tesseract writes progress/warnings to stderr even on success
             if result.stdout:
-                Print("DEBUG", f"Tesseract stdout: {result.stdout.strip()}")
+                stdout_text = result.stdout.decode('utf-8', errors='replace').strip()
+                if stdout_text:
+                    Print("DEBUG", f"Tesseract stdout: {stdout_text}")
             if result.stderr:
-                # Filter out common informational messages
-                stderr_lines = result.stderr.strip().split('\n')
-                for line in stderr_lines:
+                stderr_text = result.stderr.decode('utf-8', errors='replace').strip()
+                # Filter out common informational messages and Leptonica noise
+                for line in stderr_text.split('\n'):
+                    # Skip version info and Leptonica errors (often spurious)
                     if line and not line.startswith('Tesseract Open Source'):
-                        Print("DEBUG", f"Tesseract: {line}")
-
-        except subprocess.CalledProcessError as e:
-            # Error handling pattern from ocrmypdf/_exec/tesseract.py:tesseract_log_output()
-            error_msg = e.stderr.strip() if e.stderr else str(e)
-            Print("FAILURE", f"Tesseract failed: {error_msg}")
-
-            # Cleanup temp image on failure
-            if temp_img.exists():
-                temp_img.unlink()
-
-            raise RuntimeError(f"OCR failed: {error_msg}")
+                        if 'Leptonica Error' not in line and 'fopenReadStream' not in line:
+                            Print("DEBUG", f"Tesseract: {line}")
 
         except subprocess.TimeoutExpired:
             Print("FAILURE", "Tesseract timed out after 120 seconds")

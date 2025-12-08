@@ -11,14 +11,26 @@
   "pdf_engines": {
     "pikepdf": {
       "rendering_mode": 3,
-      "font": "Helvetica",
-      "font_size_ratio": 0.8
+      "font_size_ratio": 0.75
+    }
+  },
+  "fonts": {
+    "_comment": "PDF Base 14 fonts - guaranteed in all PDF readers, no embedding needed",
+    "text": "Helvetica",
+    "mono": "Courier",
+    "symbol": "Symbol",
+    "_notes": {
+      "text": "General prose - maximum compatibility with RAG systems",
+      "mono": "Code blocks - standard monospace",
+      "symbol": "Math/logic symbols (Greek letters, operators, etc.)"
     }
   },
   "compression": {
     "jpeg2000": {
       "quality_layers": [50],
-      "quality_mode": "rates"
+      "quality_mode": "rates",
+      "irreversible": true,
+      "_comment": "quality_layers: higher = more compression. 50 is good balance for 600 DPI"
     },
     "jpeg": {
       "quality": 95
@@ -29,7 +41,7 @@
   },
   "processing": {
     "default_dpi": 600,
-    "temp_dir": "/tmp/morphic",
+    "temp_dir": "/var/tmp/morphic",
     "dehyphenation": {
       "enabled": true,
       "dictionary": "en_US",
